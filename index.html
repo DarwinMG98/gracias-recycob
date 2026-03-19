@@ -8,55 +8,90 @@
 body {
   margin: 0;
   height: 100vh;
-  background: black;
+  background: radial-gradient(circle at center, #020617, #000000);
   overflow: hidden;
   font-family: 'Courier New', monospace;
-  color: #00ffcc;
+  color: #00ffc3;
 }
 
-/* FONDO MATRIX */
+/* MATRIX FONDO */
 canvas {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* TARJETA CENTRAL */
+/* TARJETA */
 .card {
   position: relative;
   z-index: 2;
-  max-width: 500px;
+  max-width: 520px;
   margin: auto;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  padding: 40px;
-  border-radius: 15px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 45px;
+  border-radius: 18px;
   text-align: center;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(0,255,200,0.2);
-  box-shadow: 0 0 25px rgba(0,255,200,0.2);
-  animation: fadeIn 2s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,255,195,0.15);
+  box-shadow: 0 0 40px rgba(0,255,195,0.15);
+  animation: fadeIn 1.5s ease;
 }
 
 h1 {
   color: #00ffc3;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(0,255,195,0.6);
+  font-size: 26px;
 }
 
 p {
   color: #a7f3d0;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-size: 15px;
+  min-height: 140px;
 }
 
-/* EFECTO GLOW */
-h1, .firma {
-  text-shadow: 0 0 10px #00ffc3;
+/* EFECTO CURSOR */
+#typing::after {
+  content: "|";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
 }
 
 .firma {
-  margin-top: 25px;
+  margin-top: 30px;
   font-weight: bold;
+  letter-spacing: 1px;
+  color: #00ffc3;
+  text-shadow: 0 0 10px rgba(0,255,195,0.6);
+}
+
+/* BOTÓN */
+.start {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,255,195,0.4);
+  color: #00ffc3;
+  cursor: pointer;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  transition: 0.3s;
+}
+
+.start:hover {
+  box-shadow: 0 0 15px rgba(0,255,195,0.6);
+  transform: translate(-50%, -50%) scale(1.05);
 }
 
 /* ANIMACIÓN */
@@ -77,24 +112,18 @@ h1, .firma {
 
 <canvas id="matrix"></canvas>
 
-<div class="card">
+<div class="start" onclick="startExperience()">
+  ▶ Iniciar experiencia
+</div>
+
+<div class="card" id="card" style="display:none;">
   <h1>Gracias Recycob 💻</h1>
-
-  <p>
-    Gracias por abrirme las puertas y permitirme ser parte de este proceso 🙌<br><br>
-    Me llevo aprendizaje, experiencia y grandes recuerdos de cada uno de ustedes 🚀
-  </p>
-
-  <p>
-    Esto no es un adiós, es un <strong>“nos vemos en producción”</strong> 😄
-  </p>
-
-  <div class="firma">
-    — Darwin Guachamin
-  </div>
+  <p id="typing"></p>
+  <div class="firma">— Darwin Guachamin</div>
 </div>
 
 <script>
+// MATRIX
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -130,6 +159,30 @@ function draw() {
 }
 
 setInterval(draw, 33);
+
+// TEXTO
+const text = `Gracias por abrirme las puertas y permitirme ser parte de este proceso 🙌
+
+Me llevo aprendizaje, experiencia y grandes recuerdos de cada uno de ustedes 🚀
+
+Esto no es un adiós, es un "nos vemos en producción" 😄`;
+
+let index = 0;
+const speed = 30;
+
+function typeWriter() {
+  if (index < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(index);
+    index++;
+    setTimeout(typeWriter, speed);
+  }
+}
+
+function startExperience() {
+  document.querySelector(".start").style.display = "none";
+  document.getElementById("card").style.display = "block";
+  typeWriter();
+}
 </script>
 
 </body>
