@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Gracias Recycob</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: black;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+  color: #00ffcc;
+}
+
+/* FONDO MATRIX */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* TARJETA CENTRAL */
+.card {
+  position: relative;
+  z-index: 2;
+  max-width: 500px;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,255,200,0.2);
+  box-shadow: 0 0 25px rgba(0,255,200,0.2);
+  animation: fadeIn 2s ease;
+}
+
+h1 {
+  color: #00ffc3;
+  margin-bottom: 15px;
+}
+
+p {
+  color: #a7f3d0;
+  line-height: 1.6;
+}
+
+/* EFECTO GLOW */
+h1, .firma {
+  text-shadow: 0 0 10px #00ffc3;
+}
+
+.firma {
+  margin-top: 25px;
+  font-weight: bold;
+}
+
+/* ANIMACIÓN */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="card">
+  <h1>Gracias Recycob 💻</h1>
+
+  <p>
+    Gracias por abrirme las puertas y permitirme ser parte de este proceso 🙌<br><br>
+    Me llevo aprendizaje, experiencia y grandes recuerdos de cada uno de ustedes 🚀
+  </p>
+
+  <p>
+    Esto no es un adiós, es un <strong>“nos vemos en producción”</strong> 😄
+  </p>
+
+  <div class="firma">
+    — Darwin Guachamin
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const letters = "01<>/{}[]$#";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for (let x = 0; x < columns; x++) {
+  drops[x] = 1;
+}
+
+function draw() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#00ffc3";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+
+    drops[i]++;
+  }
+}
+
+setInterval(draw, 33);
+</script>
+
+</body>
+</html>
